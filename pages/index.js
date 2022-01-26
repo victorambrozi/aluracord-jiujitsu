@@ -63,6 +63,7 @@ const PaginaInicial = () => {
               label="Entrar"
               fullWidth
               buttonColors={stylesSkynex.formButton}
+              href="/chat"
             />
           </Box>
           {/* Formulário */}
