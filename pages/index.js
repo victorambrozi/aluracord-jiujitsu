@@ -1,27 +1,47 @@
-import appConfig from "../config.json";
+import React from "react";
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
+import { useRouter } from "next/router";
 
-import GlobalStyle from "../styles/GlobalStyle";
+import appConfig from "../config.json";
 import Title from "../components/Title";
 
 import { stylesSkynex } from "../styles/PaginaInicial";
 
 const PaginaInicial = () => {
-  const username = "victorambrozi";
+  const [username, setUsername] = React.useState("victorambrozi");
+  const router = useRouter();
 
+  const changeHandler = (event) => {
+    const value = event.target.value;
+
+    setUsername(value);
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    router.push("/chat"); // encaminha para uma nova página sem necessidade de recarregamento
+  };
   return (
     <>
-      <GlobalStyle />
       <Box styleSheet={stylesSkynex.bgContainer}>
         <Box styleSheet={stylesSkynex.container}>
           {/* Formulário */}
-          <Box as="form" styleSheet={stylesSkynex.form}>
+          <Box
+            as="form"
+            styleSheet={stylesSkynex.form}
+            onSubmit={submitHandler}
+          >
             <Title tag="h2">Boas vindas de volta!</Title>
             <Text variant="body3" styleSheet={stylesSkynex.formText}>
               {appConfig.name}
             </Text>
 
-            <TextField fullWidth textFieldColors={stylesSkynex.formInput} />
+            <TextField
+              fullWidth
+              textFieldColors={stylesSkynex.formInput}
+              onChange={changeHandler}
+              value={username}
+            />
             <Button
               type="submit"
               label="Entrar"
