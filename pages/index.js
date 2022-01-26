@@ -1,22 +1,38 @@
 import React from "react";
-import { Box, Button, Text, TextField, Image } from "@skynexui/components";
+import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import { useRouter } from "next/router";
 
-import appConfig from "../config.json";
-import Title from "../components/Title";
-
 import { stylesSkynex } from "../styles/PaginaInicial";
+import appConfig from "../config.json";
+import Title from "../components/Title/index";
 
 const PaginaInicial = () => {
-  const [username, setUsername] = React.useState("victorambrozi");
   const router = useRouter();
+  const [username, setUsername] = React.useState("victorambrozi");
+  const [dataGithub, setDataGithub] = React.useState({
+    location: "",
+    linkedin: "",
+  });
 
   const changeHandler = (event) => {
     const value = event.target.value;
+    const url = `https://api.github.com/users/${value}`;
 
     setUsername(value);
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json)
+        return setDataGithub({
+          location: json.location,
+          linkedin: json.blog,
+        });
+      })
+      .catch((error) => new Error(error));
   };
 
+  console.log(dataGithub)
   const submitHandler = (event) => {
     event.preventDefault();
     router.push("/chat"); // encaminha para uma nova página sem necessidade de recarregamento
@@ -59,6 +75,12 @@ const PaginaInicial = () => {
             />
             <Text variant="body4" styleSheet={stylesSkynex.photoTextImage}>
               {username}
+            </Text>
+            <Text variant="body4" styleSheet={stylesSkynex.photoTextImage}>
+              {dataGithub.location}
+            </Text>
+            <Text variant="body4" styleSheet={stylesSkynex.photoTextImage}>
+              {dataGithub.linkedin}
             </Text>
           </Box>
           {/* Photo Area */}

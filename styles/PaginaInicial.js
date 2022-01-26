@@ -85,6 +85,7 @@ export const stylesSkynex = {
     color: appConfig.theme.colors.neutrals[200],
     backgroundColor: appConfig.theme.colors.neutrals[900],
     padding: "3px 10px",
-    borderRadius: "1000px",
+    margin: "5px 0",
+    borderRadius: "10px",
   },
 };
