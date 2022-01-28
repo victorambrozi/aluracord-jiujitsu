@@ -20,6 +20,7 @@ const PaginaInicial = () => {
 
     setUsername(value);
 
+    // Utilizar useEffect na requisição
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
@@ -31,7 +32,6 @@ const PaginaInicial = () => {
       .catch((error) => new Error(error));
   };
 
-  console.log(dataGithub)
   const submitHandler = (event) => {
     event.preventDefault();
     router.push("/chat"); // encaminha para uma nova página sem necessidade de recarregamento
