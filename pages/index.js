@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import { useRouter } from "next/router";
 
-import { stylesSkynex } from "../styles/PaginaInicial";
+import { styleHomePage } from "../styles/PaginaInicial";
 import appConfig from "../config.json";
 import Title from "../components/Title/index";
 
@@ -39,22 +39,22 @@ const PaginaInicial = () => {
   };
   return (
     <>
-      <Box styleSheet={stylesSkynex.bgContainer}>
-        <Box styleSheet={stylesSkynex.container}>
+      <Box styleSheet={styleHomePage.bgContainer}>
+        <Box styleSheet={styleHomePage.container}>
           {/* Formulário */}
           <Box
             as="form"
-            styleSheet={stylesSkynex.form}
+            styleSheet={styleHomePage.form}
             onSubmit={submitHandler}
           >
             <Title tag="h2">Boas vindas de volta!</Title>
-            <Text variant="body3" styleSheet={stylesSkynex.formText}>
+            <Text variant="body3" styleSheet={styleHomePage.formText}>
               {appConfig.name}
             </Text>
 
             <TextField
               fullWidth
-              textFieldColors={stylesSkynex.formInput}
+              textFieldColors={styleHomePage.formInput}
               onChange={changeHandler}
               value={username}
             />
@@ -62,25 +62,25 @@ const PaginaInicial = () => {
               type="submit"
               label="Entrar"
               fullWidth
-              buttonColors={stylesSkynex.formButton}
+              buttonColors={styleHomePage.formButton}
               href="/chat"
             />
           </Box>
           {/* Formulário */}
 
           {/* Photo Area */}
-          <Box styleSheet={stylesSkynex.photoArea}>
+          <Box styleSheet={styleHomePage.photoArea}>
             <Image
-              styleSheet={stylesSkynex.photoImage}
+              styleSheet={styleHomePage.photoImage}
               src={`https://github.com/${username}.png`}
             />
-            <Text variant="body4" styleSheet={stylesSkynex.photoTextImage}>
+            <Text variant="body4" styleSheet={styleHomePage.photoTextImage}>
               {username}
             </Text>
-            <Text variant="body4" styleSheet={stylesSkynex.photoTextImage}>
+            <Text variant="body4" styleSheet={styleHomePage.photoTextImage}>
               {dataGithub.location}
             </Text>
-            <Text variant="body4" styleSheet={stylesSkynex.photoTextImage}>
+            <Text variant="body4" styleSheet={styleHomePage.photoTextImage}>
               {dataGithub.linkedin}
             </Text>
           </Box>

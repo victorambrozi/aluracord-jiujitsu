@@ -1,74 +1,50 @@
 import { Box, Text, TextField, Image, Button } from "@skynexui/components";
-import React from "react";
-import appConfig from "../config.json";
+import React, { useState } from "react";
+
+import Header from "../components/Header/Header";
+import MessageList from "../components/MessageList/MessageList";
+import { styleChat } from "../styles/Chat";
 
 export default function ChatPage() {
-  // Sua lógica vai aqui
+  const [mensagem, setMensagem] = useState("");
+  const [messageList, setMessageList] = React.useState([]);
 
-  // ./Sua lógica vai aqui
+  const handleNewMessage = (newMessage) => {
+    const message = {
+      id: messageList.length + 1,
+      from: "victorambrozi",
+      text: newMessage,
+    };
+    setMessageList([message, ...messageList]);
+    setMensagem(""); // limpa input
+  };
+
+  const handleChange = ({ target: { value } }) => {
+    setMensagem(value);
+  };
+
+  const handlekeyPress = (event) => {
+    const key = event.key;
+
+    if (key === "Enter") {
+      event.preventDefault();
+      handleNewMessage(mensagem);
+    }
+  };
   return (
-    <Box
-      styleSheet={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: appConfig.theme.colors.primary[500],
-        backgroundImage: `url(https://images.unsplash.com/photo-1624938518616-3be0add427d1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80)`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundBlendMode: "multiply",
-        color: appConfig.theme.colors.neutrals["000"],
-      }}
-    >
-      <Box
-        styleSheet={{
-          display: "flex",
-          flexDirection: "column",
-          flex: 1,
-          boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
-          borderRadius: "5px",
-          backgroundColor: appConfig.theme.colors.neutrals[700],
-          height: "100%",
-          maxWidth: "95%",
-          maxHeight: "95vh",
-          padding: "32px",
-        }}
-      >
+    <Box styleSheet={styleChat.bgChat}>
+      <Box styleSheet={styleChat.chatContainer}>
         <Header />
-        <Box
-          styleSheet={{
-            position: "relative",
-            display: "flex",
-            flex: 1,
-            height: "80%",
-            backgroundColor: appConfig.theme.colors.neutrals[600],
-            flexDirection: "column",
-            borderRadius: "5px",
-            padding: "16px",
-          }}
-        >
-          {/* <MessageList mensagens={[]} /> */}
-
-          <Box
-            as="form"
-            styleSheet={{
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
+        <Box styleSheet={styleChat.chat}>
+          <MessageList mensagens={messageList} />
+          <Box as="form" styleSheet={styleChat.form}>
             <TextField
+              value={mensagem}
+              onChange={handleChange}
+              onKeyPress={handlekeyPress}
               placeholder="Insira sua mensagem aqui..."
               type="textarea"
-              styleSheet={{
-                width: "100%",
-                border: "0",
-                resize: "none",
-                borderRadius: "5px",
-                padding: "6px 8px",
-                backgroundColor: appConfig.theme.colors.neutrals[800],
-                marginRight: "12px",
-                color: appConfig.theme.colors.neutrals[200],
-              }}
+              styleSheet={styleChat.textArea}
             />
           </Box>
         </Box>
@@ -77,85 +53,13 @@ export default function ChatPage() {
   );
 }
 
-function Header() {
-  return (
-    <>
-      <Box
-        styleSheet={{
-          width: "100%",
-          marginBottom: "16px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Text variant="heading5">Chat</Text>
-        <Button
-          variant="tertiary"
-          colorVariant="neutral"
-          label="Logout"
-          href="/"
-        />
-      </Box>
-    </>
-  );
-}
 
-function MessageList(props) {
-  console.log("MessageList", props);
-  return (
-    <Box
-      tag="ul"
-      styleSheet={{
-        overflow: "scroll",
-        display: "flex",
-        flexDirection: "column-reverse",
-        flex: 1,
-        color: appConfig.theme.colors.neutrals["000"],
-        marginBottom: "16px",
-      }}
-    >
-      <Text
-        key={mensagem.id}
-        tag="li"
-        styleSheet={{
-          borderRadius: "5px",
-          padding: "6px",
-          marginBottom: "12px",
-          hover: {
-            backgroundColor: appConfig.theme.colors.neutrals[700],
-          },
-        }}
-      >
-        <Box
-          styleSheet={{
-            marginBottom: "8px",
-          }}
-        >
-          <Image
-            styleSheet={{
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-              display: "inline-block",
-              marginRight: "8px",
-            }}
-            src={`https://github.com/vanessametonini.png`}
-          />
-          <Text tag="strong">{mensagem.de}</Text>
-          <Text
-            styleSheet={{
-              fontSize: "10px",
-              marginLeft: "8px",
-              color: appConfig.theme.colors.neutrals[300],
-            }}
-            tag="span"
-          >
-            {new Date().toLocaleDateString()}
-          </Text>
-        </Box>
-        {mensagem.texto}
-      </Text>
-    </Box>
-  );
-}
+// Usuário
+// - usuário digita no textarea
+// - apertar enter para enviar
+// - adicionar o texto na listagem
+
+// Dev
+// [x] Campo criado
+// [x] Vamos usar o onChange usa o useState (ter um if pra caso seja enter pra limpar a variável) => usar o onCHange dentro do textarea(para monitorar oq o usuário está digitando)
+// [] Lista de mensagens => useState => [mensagens, setMensagens] => setMensagens(valor do textarea)

@@ -1,6 +1,6 @@
 import appConfig from "../config.json";
 
-export const stylesSkynex = {
+export const styleHomePage = {
   bgContainer: {
     display: "flex",
     alignItems: "center",
