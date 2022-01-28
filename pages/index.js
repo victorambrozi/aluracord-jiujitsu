@@ -23,7 +23,6 @@ const PaginaInicial = () => {
     fetch(url)
       .then((response) => response.json())
       .then((json) => {
-        console.log(json)
         return setDataGithub({
           location: json.location,
           linkedin: json.blog,
