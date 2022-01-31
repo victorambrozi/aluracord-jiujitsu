@@ -80,7 +80,7 @@ const PaginaInicial = () => {
               {dataGithub.location}
             </Text>
             <Text variant="body4" styleSheet={styleHomePage.photoTextImage}>
-              {dataGithub.linkedin}
+              <a href={dataGithub.linkedin}> Linkedin</a> 
             </Text>
           </Box>
           {/* Photo Area */}
