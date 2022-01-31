@@ -2,13 +2,13 @@ import React from "react";
 import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import { useRouter } from "next/router";
 
-import { styleHomePage } from "../styles/PaginaInicial";
+import { styleHomePage } from "../src/styles/PaginaInicial";
 import appConfig from "../config.json";
-import Title from "../components/Title/index";
+import Title from "../src/components/Title/index";
 
 const PaginaInicial = () => {
   const router = useRouter();
-  const [username, setUsername] = React.useState("victorambrozi");
+  const [username, setUsername] = React.useState("");
   const [dataGithub, setDataGithub] = React.useState({
     location: "",
     linkedin: "",
@@ -34,7 +34,7 @@ const PaginaInicial = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    router.push("/chat"); // encaminha para uma nova página sem necessidade de recarregamento
+    router.push(`/chat?username=${username}`); // encaminha para uma nova página sem necessidade de recarregamento
   };
   return (
     <>
@@ -62,7 +62,6 @@ const PaginaInicial = () => {
               label="Entrar"
               fullWidth
               buttonColors={styleHomePage.formButton}
-              href="/chat"
             />
           </Box>
           {/* Formulário */}

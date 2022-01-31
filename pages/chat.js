@@ -1,13 +1,16 @@
 import { Box, TextField } from "@skynexui/components";
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 
 // local components
-import Header from "../components/Header/Header";
-import MessageList from "../components/MessageList/MessageList";
+import Header from "../src/components/Header/Header";
+import MessageList from "../src/components/MessageList/MessageList";
+import { ButtonSendSticker } from "../src/components/SendStickers/SendStickers";
 
 // style
-import { styleChat } from "../styles/Chat";
+import { styleChat } from "../src/styles/Chat";
 
+// Database
 import { createClient } from "@supabase/supabase-js";
 
 // BACKEND
@@ -19,6 +22,9 @@ const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_PUBLIC);
 export default function ChatPage() {
   const [mensagem, setMensagem] = useState("");
   const [messageList, setMessageList] = React.useState([]);
+
+  const router = useRouter();
+  const user = router.query.username;
 
   const getDataBase = () => {
     supabaseClient
@@ -46,7 +52,7 @@ export default function ChatPage() {
 
   const NewMessage = (newMessage) => {
     const message = {
-      from: "victorambrozi",
+      from: user,
       text: newMessage,
     };
     // inserir no bando e dados
@@ -83,6 +89,7 @@ export default function ChatPage() {
               type="textarea"
               styleSheet={styleChat.textArea}
             />
+            <ButtonSendSticker />
           </Box>
         </Box>
       </Box>
