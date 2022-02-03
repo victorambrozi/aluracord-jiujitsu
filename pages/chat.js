@@ -24,39 +24,9 @@ export default function ChatPage() {
   const user = router.query.username;
 
   const [mensagem, setMensagem] = useState("");
-  const [messageList, setMessageList] = React.useState([
-    // {
-    //   id: 1,
-    //   from: user,
-    //   text: ':sticker: https://www.alura.com.br/imersao-react-4/assets/figurinhas/Figurinha_20.png'
-    // }
-  ]);
+  const [messageList, setMessageList] = React.useState([]);
 
-  const getDataBase = () => {
-    supabaseClient
-      .from("mensagens")
-      .select("*")
-      .order("id", { ascending: false }) // inverte a ordem das mensagens
-      .then(({ data }) => {
-        setMessageList(data);
-      });
-  };
-
-  const insertDataBase = (messageObject) => {
-    supabaseClient
-      .from("mensagens")
-      .insert([messageObject]) // inserir um novo objeto com os dados da mensagem no banco de dados
-      .then(({ data }) => {
-        setMessageList([data[0], ...messageList]);
-      });
-  };
-
-  React.useEffect(() => {
-    // Evita de fazer a requisição, toda vez que uma tecla é acionada no input
-    getDataBase();
-  }, []); // a renderização é feita somente quando a pagina carrega (1 vez só)
-
-  const NewMessage = (newMessage) => {
+  const handleNewMessage = (newMessage) => {
     const message = {
       from: user,
       text: newMessage,
@@ -67,8 +37,6 @@ export default function ChatPage() {
     setMensagem(""); // limpa input
   };
 
-  const renderStick = (sticker) => NewMessage(`:sticker: ${sticker}`);
-
   const handleChange = ({ target: { value } }) => {
     setMensagem(value);
   };
@@ -78,9 +46,48 @@ export default function ChatPage() {
 
     if (key === "Enter") {
       event.preventDefault();
-      NewMessage(mensagem);
+      handleNewMessage(mensagem);
     }
   };
+
+  const renderStick = (sticker) => handleNewMessage(`:sticker: ${sticker}`);
+
+  const listenerMessageRealTime = (addMessage) => {
+    return supabaseClient
+      .from("mensagens")
+      .on("INSERT", ({ new: recentMessage }) => {
+        addMessage(recentMessage);
+      })
+      .subscribe();
+  };
+
+  const getDataBase = async () => {
+    return await supabaseClient
+      .from("mensagens")
+      .select("*")
+      .order("id", { ascending: false }) // inverte a ordem das mensagens
+      .then(({ data }) => {
+        setMessageList(data);
+      });
+  };
+
+  const insertDataBase = async (messageObject) => {
+    return await supabaseClient
+      .from("mensagens")
+      .insert([messageObject]) // inserir um novo objeto com os dados da mensagem no banco de dados
+      .then(({ data }) => {
+        console.log(data)
+        // setMessageList([data[0], ...messageList]);
+      });
+  };
+
+  React.useEffect(() => {
+    // Evita de fazer a requisição, toda vez que uma tecla é acionada no input
+    getDataBase();
+    listenerMessageRealTime((newMessage) => {
+      setMessageList([newMessage, ...messageList]);
+    });
+  }, []); // a renderização é feita somente quando a pagina carrega (1 vez só)
 
   return (
     <Box styleSheet={styleChat.bgChat}>
