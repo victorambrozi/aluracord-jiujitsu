@@ -20,7 +20,11 @@ const MessageList = ({ mensagens }) => {
               {new Date().toLocaleDateString()}
             </Text>
           </Box>
-          {mensagem.text}
+          {mensagem.text.startsWith(":sticker:") ? (
+            <Image src={mensagem.text.replace(":sticker:", "")} />
+          ) : (
+            mensagem.text
+          )}
         </Text>
       ))}
     </Box>

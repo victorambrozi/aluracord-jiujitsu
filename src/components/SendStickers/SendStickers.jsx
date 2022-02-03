@@ -1,6 +1,9 @@
 import React from "react";
 import { Box, Button, Text, Image } from "@skynexui/components";
+
 import appConfig from "../../../config.json";
+
+// style
 import { styleButtonSendStickers } from "./send-stikers-style";
 
 export function ButtonSendSticker({ onStickerClick }) {
@@ -9,9 +12,7 @@ export function ButtonSendSticker({ onStickerClick }) {
   const stickers = appConfig.stickers;
 
   return (
-    <Box
-      styleSheet={styleButtonSendStickers.container}
-    >
+    <Box styleSheet={styleButtonSendStickers.container}>
       <Button
         styleSheet={styleButtonSendStickers.button}
         label="😋"
@@ -22,19 +23,11 @@ export function ButtonSendSticker({ onStickerClick }) {
           styleSheet={styleButtonSendStickers.containerListStickers}
           onClick={() => setOpenState(false)}
         >
-          <Text
-            styleSheet={styleButtonSendStickers.title}
-          >
-            Stickers
-          </Text>
-          <Box
-            tag="ul"
-            styleSheet={styleButtonSendStickers.listStickers}
-          >
+          <Text styleSheet={styleButtonSendStickers.title}>Stickers</Text>
+          <Box tag="ul" styleSheet={styleButtonSendStickers.listStickers}>
             {stickers.map((sticker) => (
               <Text
                 onClick={() => {
-                  // console.log('[DENTRO DO COMPONENTE] Clicou no sticker:', sticker);
                   if (Boolean(onStickerClick)) {
                     onStickerClick(sticker);
                   }

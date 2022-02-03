@@ -20,11 +20,17 @@ const SUPABASE_URL = "https://qlrjlrgsrexldsqfdpwm.supabase.co";
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_PUBLIC);
 
 export default function ChatPage() {
-  const [mensagem, setMensagem] = useState("");
-  const [messageList, setMessageList] = React.useState([]);
-
   const router = useRouter();
   const user = router.query.username;
+
+  const [mensagem, setMensagem] = useState("");
+  const [messageList, setMessageList] = React.useState([
+    // {
+    //   id: 1,
+    //   from: user,
+    //   text: ':sticker: https://www.alura.com.br/imersao-react-4/assets/figurinhas/Figurinha_20.png'
+    // }
+  ]);
 
   const getDataBase = () => {
     supabaseClient
@@ -61,6 +67,8 @@ export default function ChatPage() {
     setMensagem(""); // limpa input
   };
 
+  const renderStick = (sticker) => NewMessage(`:sticker: ${sticker}`);
+
   const handleChange = ({ target: { value } }) => {
     setMensagem(value);
   };
@@ -89,7 +97,8 @@ export default function ChatPage() {
               type="textarea"
               styleSheet={styleChat.textArea}
             />
-            <ButtonSendSticker />
+            <ButtonSendSticker onStickerClick={renderStick} />{" "}
+            {/*propriedade passada como callback do componente */}
           </Box>
         </Box>
       </Box>
